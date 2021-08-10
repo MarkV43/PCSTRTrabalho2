@@ -9,14 +9,13 @@ void control_temperature_pi() {
 
 void control_temperature() {
     struct timespec t;
-    long interval = 30e6; // 30ms
     clock_gettime(CLOCK_MONOTONIC, &t);
     t.tv_sec++;
 
     while (1) {
         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t, NULL);
 
-        t.tv_nsec += interval;
+        t.tv_nsec += TEMP_INT_NS;
         while (t.tv_nsec >= NSEC_PER_SEC) {
             t.tv_nsec -= NSEC_PER_SEC;
             t.tv_sec++;
