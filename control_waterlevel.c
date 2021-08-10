@@ -1,51 +1,50 @@
+#include <time.h>
+#include "constants.h"
+#include "variables.h"
 
-// sensors
-float H;
-// actuators
-float Ni, Nf;
+void control_waterlevel_pi() {
 
-//constants
-const float R = 0.001f,
-        S = 4184,
-        B = 4,
-        P = 1000,
-        Href = 2.5f,
-        Vref = Href * B;
-
-const float
-        pV = 100,
-        iV = 20,
-        NfV = 250;
-
-
-float Verr, Vint = 0;
-
-*float levelactuators(float *Verr, float *Vint, float H){
-
-    if (*Verr > 0){
-        *Vint += *Verr * 0.03f;
+    if (Verr > 0) {
+        pthread_mutex_lock(&mutex_Vint);
+        Vint += Verr * 0.03f;
+        pthread_mutex_unlock(&mutex_Vint);
     }
 
-    *Verr = Vref - (H * B);
-
-    
+    pthread_mutex_lock(&mutex_Verr);
+    Verr = Vref - (H * B);
+    pthread_mutex_unlock(&mutex_Verr);
 
     //integral proportional water level control
 
-    Ni = (*Verr * pV + *Vint / iV);
+    pthread_mutex_lock(&mutex_Ni);
+    Ni = clamp(Verr * pV + Vint / iV, 0, 100);
+    pthread_mutex_unlock(&mutex_Ni);
 
     //makes sure the water level never reaches 3 meters
+    pthread_mutex_lock(&mutex_Nf);
     if (H > 2.9) {
-        Nf = -*Verr * NfV / B;
+        Nf = clamp(-Verr * NfV / B, 0, 100);
     } else {
         Nf = 0;
     }
+    pthread_mutex_unlock(&mutex_Nf);
+}
 
-    //making NI a number from 0 to 100 to avoid errors with the boiler command
-    Ni = clamp(Ni, 0, 100);
-    Nf = clamp(Nf, 0, 100);
-    float lactuators[2];
-    lactuators[1]= Ni;
-    lactuators[2]= Nf;
-    return lactuators;
-};
+void control_waterlevel() {
+    struct timespec t;
+    long interval = 30e6; // 30ms
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    t.tv_sec++;
+
+    while (1) {
+        clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t, NULL);
+
+        t.tv_nsec += interval;
+        while (t.tv_nsec >= NSEC_PER_SEC) {
+            t.tv_nsec -= NSEC_PER_SEC;
+            t.tv_sec++;
+        }
+
+        control_waterlevel_pi();
+    }
+}
