@@ -8,9 +8,13 @@ const float R = 0.001f,
         B = 4,
         P = 1000,
         Href = 2.5f,
+        Tref = 30,
         Vref = Href * B;
 
-const float
+// 4200 J / kg ºC
+
+const float pT = 20,
+        iT = 500,
         pV = 100,
         iV = 20,
         NfV = 250;

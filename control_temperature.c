@@ -3,7 +3,30 @@
 #include "variables.h"
 
 void control_temperature_pi() {
-    // TODO inserir código de controle da temperatura
+
+    Terr = Tref - T;
+
+    Tint += Terr * 0.03f;
+    if (Verr > 0)
+        Vint += Verr * 0.03f;
+
+    Na = (Terr * pT + Tint / iT);
+    if (H > 2.8) {
+        Q = Na;
+        if (Na < 0){
+            Q = 0;
+            Na = 0;
+        }
+    } else {
+        if (Na > 10) {
+            Q = (Na - 10) * S;
+            Na = 10;
+        } else if (Na < 0) {
+            Q = 0;
+            Na = 0;
+        }
+    }
+
     // Não esquecer de dar Mutex Lock
 }
 
