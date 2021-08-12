@@ -3,23 +3,17 @@
 
 #include <pthread.h>
 
-float Verr, Vint = 0,
-            Terr, Tint = 0;
+#define clamp(n, a, b) ((n) < (a) ? (a) : ((n) > (b) ? (b) : (n)))
 
-// sensors
-float T, Ta, Ti, No, H;
-// actuators
-float Q, Ni, Na, Nf;
-// others
-float Qr;
+extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr;
 
-char buffer[20] = "a__";
+extern char buffer[20];
 
-int screenInterval = 0;
+extern int screenInterval;
 
 ///////////////////////
 // Mutexes
-pthread_mutex_t mutex_Verr,
+extern pthread_mutex_t mutex_Verr,
     mutex_Vint,
     mutex_Terr,
     mutex_Tint,

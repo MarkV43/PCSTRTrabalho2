@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "constants.h": "c"
+        "constants.h": "c",
+        "print_data.h": "c",
+        "control_temperature.h": "c",
+        "control_waterlevel.h": "c"
     }
 }
