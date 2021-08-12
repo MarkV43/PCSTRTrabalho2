@@ -1,7 +1,10 @@
 #include <time.h>
+#include <stdlib.h>
+#include "udpclient.h"
 #include "constants.h"
 #include "variables.h"
 
+static char buffer[14];
 void control_waterlevel_pi() {
 
     if (Verr > 0) {
@@ -28,6 +31,17 @@ void control_waterlevel_pi() {
         Nf = 0;
     }
     pthread_mutex_unlock(&mutex_Nf);
+
+    pthread_mutex_lock(&mutex_exchangeMessage);
+    buffer[0] = 'a';
+    buffer[1] = 'n';
+    buffer[2] = 'i';
+    gcvt(Ni, 6, buffer + 3);
+    exchange_message(buffer, NULL);
+    buffer[2] = 'f';
+    gcvt(Nf, 6, buffer + 3);
+    exchange_message(buffer, NULL);
+    pthread_mutex_unlock(&mutex_exchangeMessage);
 }
 
 void control_waterlevel() {

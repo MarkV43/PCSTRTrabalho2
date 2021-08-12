@@ -31,4 +31,5 @@ pthread_mutex_t mutex_Verr,
     mutex_Nf,
     mutex_Qr,
     mutex_buffer,
-    mutex_screenInterval;
+    mutex_screenInterval,
+    mutex_exchangeMessage;
