@@ -1,4 +1,5 @@
 #include <time.h>
+#include <stdlib.h>
 #include "constants.h"
 #include "variables.h"
 
@@ -29,6 +30,13 @@ void control_temperature_pi() {
 
     // Não esquecer de dar Mutex Lock
 }
+
+#ifndef CLOCK_MONOTONIC
+#define CLOCK_MONOTONIC 1
+#endif
+#ifndef TIMER_ABSTIME
+#define TIMER_ABSTIME 1
+#endif
 
 void control_temperature() {
     struct timespec t;

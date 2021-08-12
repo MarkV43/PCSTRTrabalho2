@@ -30,6 +30,13 @@ void control_waterlevel_pi() {
     pthread_mutex_unlock(&mutex_Nf);
 }
 
+#ifndef CLOCK_MONOTONIC
+#define CLOCK_MONOTONIC 1
+#endif
+#ifndef TIMER_ABSTIME
+#define TIMER_ABSTIME 1
+#endif
+
 void control_waterlevel() {
     struct timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
