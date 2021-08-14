@@ -4,12 +4,16 @@
 #include "variables.h"
 
 void control_temperature_pi() {
-
+    pthread_mutex_lock(&mutex_Terr);
     Terr = Tref - T;
-
+    pthread_mutex_lock(&mutex_Tint);
     Tint += Terr * 0.03f;
-    if (Verr > 0)
-        Vint += Verr * 0.03f;
+
+    pthread_mutex_lock(&mutex_Na);
+    pthread_mutex_lock(&mutex_Q);
+
+    pthread_mutex_unlock(&mutex_Terr);
+    pthread_mutex_unlock(&mutex_Tint);
 
     Na = (Terr * pT + Tint / iT);
     if (H > 2.8) {
@@ -27,6 +31,8 @@ void control_temperature_pi() {
             Na = 0;
         }
     }
+    pthread_mutex_unlock(&mutex_Na);
+    pthread_mutex_unlock(&mutex_Q);
 
     // Não esquecer de dar Mutex Lock
 }
