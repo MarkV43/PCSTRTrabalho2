@@ -7,7 +7,7 @@
 
 extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr;
 
-extern char buffer[20];
+extern char buffer, buffer_read[14];
 
 extern int screenInterval;
 
@@ -29,6 +29,7 @@ extern pthread_mutex_t mutex_Verr,
     mutex_Qr,
     mutex_buffer,
     mutex_screenInterval,
+    mutex_readMessage,
     mutex_exchangeMessage;
 
 #endif // TRABALHO2_VARIABLES

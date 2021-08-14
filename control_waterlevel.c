@@ -4,18 +4,17 @@
 #include "constants.h"
 #include "variables.h"
 
-static char buffer[14];
 void control_waterlevel_pi() {
+
+    pthread_mutex_lock(&mutex_Verr);
+    Verr = Vref - (H * B);
+    pthread_mutex_unlock(&mutex_Verr);
 
     if (Verr > 0) {
         pthread_mutex_lock(&mutex_Vint);
         Vint += Verr * 0.03f;
         pthread_mutex_unlock(&mutex_Vint);
     }
-
-    pthread_mutex_lock(&mutex_Verr);
-    Verr = Vref - (H * B);
-    pthread_mutex_unlock(&mutex_Verr);
 
     //integral proportional water level control
 

@@ -1,9 +1,17 @@
 #include <time.h>
 #include <stdlib.h>
+#include "udpclient.h"
 #include "constants.h"
 #include "variables.h"
 
 void control_temperature_pi() {
+    pthread_mutex_lock(&mutex_readMessage);
+    exchange_message("st-0", buffer_read);
+    T = strtof(buffer_read + 3, NULL);
+    exchange_message("sta0", buffer_read);
+    Ta = strtof(buffer_read + 3, NULL);
+    pthread_mutex_unlock(&mutex_readMessage);
+
     pthread_mutex_lock(&mutex_Terr);
     Terr = Tref - T;
     pthread_mutex_lock(&mutex_Tint);
@@ -34,7 +42,16 @@ void control_temperature_pi() {
     pthread_mutex_unlock(&mutex_Na);
     pthread_mutex_unlock(&mutex_Q);
 
-    // Não esquecer de dar Mutex Lock
+    pthread_mutex_lock(&mutex_exchangeMessage);
+    buffer[0] = 'a';
+    buffer[1] = 'n';
+    buffer[2] = 'i';
+    gcvt(Ni, 6, buffer + 3);
+    exchange_message(buffer, NULL);
+    buffer[2] = 'f';
+    gcvt(Nf, 6, buffer + 3);
+    exchange_message(buffer, NULL);
+    pthread_mutex_unlock(&mutex_exchangeMessage);
 }
 
 #ifndef CLOCK_MONOTONIC

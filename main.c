@@ -20,8 +20,14 @@ void funcao_teste() {
     printf("HAHAHA\n");
 }
 
-int main() {
-    printf("Hello World!\n");
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: trabalho1 <address> <port>\n");
+        exit(1);
+    }
+
+    int port = atoi(argv[2]);
+    setup_sockets(port, argv[1]);
 
     pthread_create(&thread_cwl, NULL, (void *)control_waterlevel, NULL);
     pthread_create(&thread_ct, NULL, (void *)control_temperature, NULL);

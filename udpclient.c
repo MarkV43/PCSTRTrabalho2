@@ -68,6 +68,9 @@ void setup_sockets(int port, char* address) {
 long exchange_message(char* message, char* response) {
     send_message(local_socket, target_address, message);
 
+    if (response == NULL)
+        return 0L;
+
     long size = receive_message(local_socket, response, 1000);
     response[size] = '\0';
 

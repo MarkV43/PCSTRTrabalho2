@@ -10,7 +10,9 @@ float Q, Ni, Na, Nf;
 // others
 float Qr;
 
-char buffer[20] = "a__";
+char buffer[14] = "a__";
+
+char buffer_read[14];
 
 int screenInterval = 0;
 
@@ -30,6 +32,6 @@ pthread_mutex_t mutex_Verr,
     mutex_Na,
     mutex_Nf,
     mutex_Qr,
-    mutex_buffer,
     mutex_screenInterval,
+    mutex_readMessage,
     mutex_exchangeMessage;
