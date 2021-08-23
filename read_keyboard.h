@@ -1,0 +1,6 @@
+#ifndef TRABALHO2_READ_KEYBOARD
+#define TRABALHO2_READ_KEYBOARD
+
+void read_keyboard();
+
+#endif //TRABALHO2_CONTROL_TEMPERATURE

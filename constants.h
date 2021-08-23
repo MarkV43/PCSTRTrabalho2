@@ -11,6 +11,6 @@
 #define TEMP_INT_NS 50e6 // 50 ms
 #define LEVEL_INT_NS 70e6 // 70 ms
 
-extern const float R, S, B, P, Href, Vref, Tref, pV, iV, NfV, pT, iT;
+extern const float R, S, B, P, pV, iV, NfV, pT, iT;
 
 #endif //TRABALHO2_CONSTANTS

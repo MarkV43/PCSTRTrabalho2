@@ -5,7 +5,7 @@
 
 #define clamp(n, a, b) ((n) < (a) ? (a) : ((n) > (b) ? (b) : (n)))
 
-extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr;
+extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr, Tref, Href, Vref;
 
 extern char buffer[14], buffer_read[14];
 
@@ -30,6 +30,10 @@ extern pthread_mutex_t mutex_Verr,
     mutex_buffer,
     mutex_screenInterval,
     mutex_readMessage,
-    mutex_exchangeMessage;
+    mutex_exchangeMessage,
+    mutex_Tref,
+    mutex_Vref,
+    mutex_Href,
+    mutex_B;
 
 #endif // TRABALHO2_VARIABLES
