@@ -6,9 +6,19 @@
 
 void control_waterlevel_pi() {
 
+    pthread_mutex_lock(&mutex_Vref);
+    pthread_mutex_lock(&mutex_Href);
+    pthread_mutex_lock(&mutex_B);
+    Vref = (Href * B);
+    pthread_mutex_unlock(&mutex_Vref);
+    pthread_mutex_unlock(&mutex_Href);
+    pthread_mutex_unlock(&mutex_B);
+
     pthread_mutex_lock(&mutex_Verr);
+    pthread_mutex_lock(&mutex_Vref);
     Verr = Vref - (H * B);
     pthread_mutex_unlock(&mutex_Verr);
+    pthread_mutex_unlock(&mutex_Vref);
 
     if (Verr > 0) {
         pthread_mutex_lock(&mutex_Vint);
