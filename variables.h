@@ -9,7 +9,7 @@ extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr, Tref, 
 
 extern char buffer[14], buffer_read[14];
 
-extern int screenInterval;
+extern int screenInterval, activatealarm;
 
 ///////////////////////
 // Mutexes
