@@ -7,9 +7,9 @@
 
 void control_temperature_pi() {
 
-    pthread_mutex_lock(&mutex_Terr);
-    Terr = Tref - T;
-    pthread_mutex_unlock(&mutex_Terr);
+    pthread_mutex_lock(&mutex_T);
+    float Terr = Tref - T;
+    pthread_mutex_unlock(&mutex_T);
     
     pthread_mutex_lock(&mutex_Tint);
     Tint += Terr * 0.03f;

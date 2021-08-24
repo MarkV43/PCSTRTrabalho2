@@ -5,7 +5,7 @@
 
 #define clamp(n, a, b) ((n) < (a) ? (a) : ((n) > (b) ? (b) : (n)))
 
-extern float Verr, Vint, Terr, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr, Tref, Href, Vref;
+extern float Verr, Vint, Tint, T, Ta, Ti, No, H, Q, Ni, Na, Nf, Qr, Tref, Href, Vref;
 
 extern char buffer[14], buffer_read[14];
 

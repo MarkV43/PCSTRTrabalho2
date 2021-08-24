@@ -1,7 +1,7 @@
 #include <pthread.h>
 
 float Verr, Vint = 0,
-            Terr, Tint = 0;
+            Tint = 0;
 
 // sensors
 float T, Ta, Ti, No, H;
