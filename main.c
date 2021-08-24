@@ -12,17 +12,14 @@
 #include "print_data.h"
 #include "constants.h"
 #include "read_keyboard.h"
+#include "double_buffer.h"
 
 pthread_t thread_cwl;
 pthread_t thread_ct;
 pthread_t thread_print;
 pthread_t thread_alarm;
 pthread_t thread_keyboard;
-
-
-void funcao_teste() {
-    printf("HAHAHA\n");
-}
+pthread_t thread_buffer;
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -38,10 +35,12 @@ int main(int argc, char *argv[]) {
     pthread_create(&thread_ct, NULL, (void *)control_temperature, NULL);
     pthread_create(&thread_print, NULL, (void *)print_data, NULL);
     pthread_create(&thread_alarm, NULL, (void *)alarm, NULL);
+    pthread_create(&thread_buffer, NULL, (void *)double_buffer, NULL);
 
     pthread_join(thread_keyboard, NULL);
     pthread_join(thread_cwl, NULL);
     pthread_join(thread_ct, NULL);
     pthread_join(thread_print, NULL);
     pthread_join(thread_alarm, NULL);
+    pthread_join(thread_buffer, NULL);
 }

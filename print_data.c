@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "variables.h"
+#include "double_buffer.h"
 
 
 void print_data() {
@@ -57,5 +58,14 @@ void print_data() {
         pthread_mutex_unlock(&mutex_Tint);
         printf("=======================\n");
         pthread_mutex_unlock(&mutex_console);
+
+        struct Data data = {
+            .T = T,
+            .Tref = Tref,
+            .H = H,
+            .Href = Href
+        };
+
+        buffer_insert_value(data);
     }
 }
