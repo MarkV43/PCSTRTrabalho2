@@ -32,6 +32,10 @@ void print_data() {
         printf("Water temperature:");
         pthread_mutex_lock(&mutex_T);
         printf("%f\n", T);
+        if (activatealarm){
+            printf("ALARME\n");
+            printf("Estamos fazendo uma sopa!?\n Água muito quente!\n");
+        }
         pthread_mutex_unlock(&mutex_T);
         printf("Water level:");
         pthread_mutex_lock(&mutex_H);

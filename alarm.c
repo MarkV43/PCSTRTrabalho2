@@ -41,6 +41,14 @@ void alarm_loop() {
     pthread_mutex_unlock(&mutex_H);
 
     pthread_mutex_unlock(&mutex_exchangeMessage);
+
+    pthread_mutex_lock(&mutex_T);
+    if(T >= 30){
+        activatealarm = 1;
+    } else {
+        activatealarm = 0;
+    }
+    pthread_mutex_unlock(&mutex_T);
 }
 
 #ifndef CLOCK_MONOTONIC
