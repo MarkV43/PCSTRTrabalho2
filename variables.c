@@ -20,6 +20,8 @@ char buffer_read[14];
 
 int screenInterval = 0;
 
+int activatealarm = 0;
+
 ///////////////////////
 // Mutexes
 pthread_mutex_t mutex_Verr,

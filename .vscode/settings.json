@@ -6,6 +6,7 @@
         "control_waterlevel.h": "c",
         "time.h": "c",
         "variables.h": "c",
-        "read_keyboard.h": "c"
+        "read_keyboard.h": "c",
+        "udpclient.h": "c"
     }
 }
