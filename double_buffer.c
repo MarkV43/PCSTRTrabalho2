@@ -38,6 +38,9 @@ struct Data *wait_full_buffer() {
 }
 
 void double_buffer() {
+    FILE *fp = fopen("./data.txt", "w");
+    fclose(fp);
+    
     while (1) {
         struct Data *buffer = wait_full_buffer();
 
