@@ -1,10 +1,13 @@
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "udpclient.h"
 #include "constants.h"
 #include "variables.h"
 
 void control_waterlevel_pi() {
+
+    printf("CWL\n");
 
     pthread_mutex_lock(&mutex_Verr);
     Verr = Vref - (H * B);
@@ -25,21 +28,28 @@ void control_waterlevel_pi() {
     //makes sure the water level never reaches 3 meters
     pthread_mutex_lock(&mutex_Nf);
     if (H > 2.9) {
-        Nf = clamp(-Verr * NfV / B, 0, 100);
+        Nf = 100;
     } else {
         Nf = 0;
     }
     pthread_mutex_unlock(&mutex_Nf);
 
     pthread_mutex_lock(&mutex_exchangeMessage);
-    buffer[0] = 'a';
-    buffer[1] = 'n';
-    buffer[2] = 'i';
-    gcvt(Ni, 6, buffer + 3);
-    exchange_message(buffer, NULL);
-    buffer[2] = 'f';
-    gcvt(Nf, 6, buffer + 3);
-    exchange_message(buffer, NULL);
+        buffer[1] = 'n';
+        buffer[2] = 'i';
+
+        pthread_mutex_lock(&mutex_Ni);
+            gcvt(Ni, 6, buffer + 3);
+        pthread_mutex_unlock(&mutex_Ni);
+
+        exchange_message(buffer, buffer_read);
+        buffer[2] = 'f';
+
+        pthread_mutex_lock(&mutex_Nf);
+            gcvt(Nf, 6, buffer + 3);
+        pthread_mutex_unlock(&mutex_Nf);
+
+        exchange_message(buffer, buffer_read);
     pthread_mutex_unlock(&mutex_exchangeMessage);
 }
 

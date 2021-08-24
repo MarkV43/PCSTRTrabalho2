@@ -10,6 +10,7 @@
 
 #define TEMP_INT_NS 50e6 // 50 ms
 #define LEVEL_INT_NS 70e6 // 70 ms
+#define ALARM_INT_NS 10e6 // 10 ms
 
 extern const float R, S, B, P, Href, Vref, Tref, pV, iV, NfV, pT, iT;
 

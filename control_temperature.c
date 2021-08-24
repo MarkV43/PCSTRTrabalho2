@@ -1,27 +1,24 @@
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "udpclient.h"
 #include "constants.h"
 #include "variables.h"
 
 void control_temperature_pi() {
-    pthread_mutex_lock(&mutex_readMessage);
-    exchange_message("st-0", buffer_read);
-    T = strtof(buffer_read + 3, NULL);
-    exchange_message("sta0", buffer_read);
-    Ta = strtof(buffer_read + 3, NULL);
-    pthread_mutex_unlock(&mutex_readMessage);
+
+    printf("CTMP\n");
 
     pthread_mutex_lock(&mutex_Terr);
     Terr = Tref - T;
+    pthread_mutex_unlock(&mutex_Terr);
+    
     pthread_mutex_lock(&mutex_Tint);
     Tint += Terr * 0.03f;
+    pthread_mutex_unlock(&mutex_Tint);
 
     pthread_mutex_lock(&mutex_Na);
     pthread_mutex_lock(&mutex_Q);
-
-    pthread_mutex_unlock(&mutex_Terr);
-    pthread_mutex_unlock(&mutex_Tint);
 
     Na = (Terr * pT + Tint / iT);
     if (H > 2.8) {
@@ -43,14 +40,24 @@ void control_temperature_pi() {
     pthread_mutex_unlock(&mutex_Q);
 
     pthread_mutex_lock(&mutex_exchangeMessage);
-    buffer[0] = 'a';
-    buffer[1] = 'n';
-    buffer[2] = 'i';
-    gcvt(Ni, 6, buffer + 3);
-    exchange_message(buffer, NULL);
-    buffer[2] = 'f';
-    gcvt(Nf, 6, buffer + 3);
-    exchange_message(buffer, NULL);
+
+        buffer[1] = 'n';
+        buffer[2] = 'a';
+
+        pthread_mutex_lock(&mutex_Na);
+            gcvt(Na, 6, buffer + 3);
+        pthread_mutex_unlock(&mutex_Na);
+
+        exchange_message(buffer, buffer_read);
+        buffer[1] = 'q';
+        buffer[2] = '-';
+
+        pthread_mutex_lock(&mutex_Q);
+            gcvt(Q, 6, buffer + 3);
+        pthread_mutex_unlock(&mutex_Q);
+
+        exchange_message(buffer, buffer_read);
+
     pthread_mutex_unlock(&mutex_exchangeMessage);
 }
 
