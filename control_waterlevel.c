@@ -34,12 +34,14 @@ void control_waterlevel_pi() {
 
     //makes sure the water level never reaches 3 meters
     pthread_mutex_lock(&mutex_Nf);
+    pthread_mutex_lock(&mutex_B);
     if (H > 2.9) {
         Nf = clamp(-Verr * NfV / B, 0, 100);
     } else {
         Nf = 0;
     }
     pthread_mutex_unlock(&mutex_Nf);
+    pthread_mutex_unlock(&mutex_B);
 
     pthread_mutex_lock(&mutex_exchangeMessage);
     buffer[0] = 'a';
