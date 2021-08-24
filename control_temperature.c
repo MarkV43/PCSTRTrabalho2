@@ -7,8 +7,6 @@
 
 void control_temperature_pi() {
 
-    printf("CTMP\n");
-
     pthread_mutex_lock(&mutex_Terr);
     Terr = Tref - T;
     pthread_mutex_unlock(&mutex_Terr);

@@ -7,11 +7,19 @@
 
 void control_waterlevel_pi() {
 
-    printf("CWL\n");
+    pthread_mutex_lock(&mutex_Vref);
+    pthread_mutex_lock(&mutex_Href);
+    pthread_mutex_lock(&mutex_B);
+    Vref = (Href * B);
+    pthread_mutex_unlock(&mutex_Vref);
+    pthread_mutex_unlock(&mutex_Href);
+    pthread_mutex_unlock(&mutex_B);
 
     pthread_mutex_lock(&mutex_Verr);
+    pthread_mutex_lock(&mutex_Vref);
     Verr = Vref - (H * B);
     pthread_mutex_unlock(&mutex_Verr);
+    pthread_mutex_unlock(&mutex_Vref);
 
     if (Verr > 0) {
         pthread_mutex_lock(&mutex_Vint);
@@ -27,12 +35,14 @@ void control_waterlevel_pi() {
 
     //makes sure the water level never reaches 3 meters
     pthread_mutex_lock(&mutex_Nf);
+    pthread_mutex_lock(&mutex_B);
     if (H > 2.9) {
         Nf = 100;
     } else {
         Nf = 0;
     }
     pthread_mutex_unlock(&mutex_Nf);
+    pthread_mutex_unlock(&mutex_B);
 
     pthread_mutex_lock(&mutex_exchangeMessage);
         buffer[1] = 'n';

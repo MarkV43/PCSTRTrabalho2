@@ -9,6 +9,10 @@ float T, Ta, Ti, No, H;
 float Q, Ni, Na, Nf;
 // others
 float Qr;
+// references
+float Href = 2.5f,
+      Vref = 0,
+      Tref = 30;
 
 char buffer[14] = "a__";
 
@@ -34,4 +38,9 @@ pthread_mutex_t mutex_Verr,
     mutex_Qr,
     mutex_screenInterval,
     mutex_readMessage,
-    mutex_exchangeMessage;
+    mutex_exchangeMessage,
+    mutex_Tref,
+    mutex_Vref,
+    mutex_Href,
+    mutex_B,
+    mutex_console;

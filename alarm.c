@@ -7,42 +7,36 @@
 
 void alarm_loop() {
     // Read all values
-    printf("ALARM\n");
 
     pthread_mutex_lock(&mutex_exchangeMessage);
 
     exchange_message("sta0", buffer_read);
 
     pthread_mutex_lock(&mutex_Ta);
-    printf("ALARM Ta %s\n", buffer_read);
     Ta = strtof(buffer_read + 3, NULL);
     pthread_mutex_unlock(&mutex_Ta);
 
     exchange_message("st-0", buffer_read);
 
     pthread_mutex_lock(&mutex_T);
-    printf("ALARM T  %s\n", buffer_read);
     T = strtof(buffer_read + 3, NULL);
     pthread_mutex_unlock(&mutex_T);
 
     exchange_message("sti0", buffer_read);
 
     pthread_mutex_lock(&mutex_Ti);
-    printf("ALARM Ti %s\n", buffer_read);
     Ti = strtof(buffer_read + 3, NULL);
     pthread_mutex_unlock(&mutex_Ti);
 
     exchange_message("sno0", buffer_read);
 
     pthread_mutex_lock(&mutex_No);
-    printf("ALARM No %s\n", buffer_read);
     No = strtof(buffer_read + 3, NULL);
     pthread_mutex_unlock(&mutex_No);
 
     exchange_message("sh-0", buffer_read);
 
     pthread_mutex_lock(&mutex_H);
-    printf("ALARM H  %s\n", buffer_read);
     H = strtof(buffer_read + 3, NULL);
     pthread_mutex_unlock(&mutex_H);
 
